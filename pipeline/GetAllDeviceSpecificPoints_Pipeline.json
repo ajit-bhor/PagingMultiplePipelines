@@ -78,57 +78,7 @@
 					},
 					"activities": [
 						{
-							"name": "Add Site Device Counter",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "SiteDevices-TempCounter",
-								"value": {
-									"value": "@string(add(int(variables('SiteDevices-PageCounter')),1))",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Assign Addition",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Add Site Device Counter",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "SiteDevices-PageCounter",
-								"value": {
-									"value": "@variables('SiteDevices-TempCounter')",
-									"type": "Expression"
-								}
-							}
-						},
-						{
-							"name": "Reset Temp",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Assign Addition",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "SiteDevices-TempCounter",
-								"value": "0"
-							}
-						},
-						{
-							"name": "Copy data1",
+							"name": "Copy Device Points Data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -175,14 +125,51 @@
 						{
 							"name": "Add Device Points Page Counter",
 							"type": "SetVariable",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Copy Device Points Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "TempCounter",
 								"value": {
-									"value": "@add(int(variables('CurrentDevicePointPage')),1)",
+									"value": "@string(add(int(variables('CurrentDevicePointPage')),1))",
 									"type": "Expression"
 								}
+							}
+						},
+						{
+							"name": "Assign Addition",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Add Device Points Page Counter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "CurrentDevicePointPage",
+								"value": {
+									"value": "@variables('TempCounter')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Reset Temp Variable",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCounter",
+								"value": "0"
 							}
 						}
 					],
