@@ -1,0 +1,301 @@
+{
+	"name": "GetDeviceControllerData_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetSiteSpecificDevices",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat('HTTP://192.168.114.134/inventory/api/devices/paging?siteId=',pipeline().parameters.SITE_ID)",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "@pipeline().parameters.AuthorizationToken",
+							"type": "Expression"
+						},
+						"X-TENANT-ID": "gdctest"
+					},
+					"linkedServices": [
+						{
+							"referenceName": "SiteDevicesLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					]
+				}
+			},
+			{
+				"name": "Get Max Site-Devices Pages",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetSiteSpecificDevices",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "SiteDevices-MaxPages",
+					"value": {
+						"value": "@string(activity('GetSiteSpecificDevices').output.totalPages)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Until Max Site Specific Device Pages",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Get Max Site-Devices Pages",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@lessOrEquals(int(variables('SiteDevices-MaxPages')),int(variables('SiteDevices-PageCounter')))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy Site-Devices Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"additionalColumns": [
+										{
+											"name": "SITE_ID",
+											"value": {
+												"value": "@pipeline().parameters.SITE_ID",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "SITE_NAME",
+											"value": {
+												"value": "@pipeline().parameters.SITE_NAME",
+												"type": "Expression"
+											}
+										},
+										{
+											"name": "SITE_TIMEZONE",
+											"value": {
+												"value": "@pipeline().parameters.SITE_TIMEZONE",
+												"type": "Expression"
+											}
+										}
+									],
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"Authorization": {
+											"value": "@pipeline().parameters.AuthorizationToken",
+											"type": "Expression"
+										},
+										"X-TENANT-ID": "gdctest"
+									}
+								},
+								"sink": {
+									"type": "SqlServerSink"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "['id']"
+											},
+											"sink": {
+												"name": "DeviceID",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "['deviceName']"
+											},
+											"sink": {
+												"name": "DeviceName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['SITE_ID']"
+											},
+											"sink": {
+												"name": "SiteID",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['SITE_NAME']"
+											},
+											"sink": {
+												"name": "SiteName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['SITE_TIMEZONE']"
+											},
+											"sink": {
+												"name": "TimeZone",
+												"type": "String"
+											}
+										}
+									],
+									"collectionReference": "$['content']"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SiteSpecificDevicesListDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"current_page": {
+											"value": "@variables('SiteDevices-PageCounter')",
+											"type": "Expression"
+										},
+										"siteId": {
+											"value": "@pipeline().parameters.SITE_ID",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SqlServerTable2",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Add Site Device Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy Site-Devices Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "SiteDevices-TempCounter",
+								"value": {
+									"value": "@string(add(int(variables('SiteDevices-PageCounter')),1))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Assign Addition",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Add Site Device Counter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "SiteDevices-PageCounter",
+								"value": {
+									"value": "@variables('SiteDevices-TempCounter')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Reset Temp",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Assign Addition",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "SiteDevices-TempCounter",
+								"value": "0"
+							}
+						}
+					],
+					"timeout": "7.00:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"SITE_ID": {
+				"type": "string"
+			},
+			"SITE_NAME": {
+				"type": "string"
+			},
+			"AuthorizationToken": {
+				"type": "string"
+			},
+			"SITE_TIMEZONE": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"SiteDevices-MaxPages": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"SiteDevices-PageCounter": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"SiteDevices-TempCounter": {
+				"type": "String",
+				"defaultValue": "0"
+			}
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

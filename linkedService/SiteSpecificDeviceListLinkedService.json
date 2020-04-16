@@ -1,0 +1,17 @@
+{
+	"name": "SiteSpecificDeviceListLinkedService",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "HTTP://192.168.114.134/inventory/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		},
+		"connectVia": {
+			"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

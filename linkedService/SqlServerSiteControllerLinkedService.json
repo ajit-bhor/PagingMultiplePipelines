@@ -1,0 +1,16 @@
+{
+	"name": "SqlServerSiteControllerLinkedService",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=abclsqlserver.database.windows.net;initial catalog=abcldatabase;user id=abcl",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIyNDgyZTEyMS05YjY3LTQwZjctODMxMi1hNDgzYjM3ODE4MTAiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

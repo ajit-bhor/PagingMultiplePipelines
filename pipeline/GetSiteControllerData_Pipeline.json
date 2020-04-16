@@ -1,0 +1,305 @@
+{
+	"name": "GetSiteControllerData_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "WebAuthenticationGetBearerToken",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "http://192.168.114.134/uaa/auth?password=pass&username=administrator",
+					"connectVia": {
+						"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/x-www-form-urlencoded",
+						"X-TENANT-ID": "gdctest",
+						"Accept": "application/json"
+					},
+					"body": "'none'",
+					"linkedServices": [
+						{
+							"referenceName": "AuthenticationApiLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					]
+				}
+			},
+			{
+				"name": "GetAllSites",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "WebAuthenticationGetBearerToken",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "HTTP://192.168.114.134/inventory/api/sites/paging",
+					"connectVia": {
+						"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "@concat('Bearer ', activity('WebAuthenticationGetBearerToken').output.access_token)",
+							"type": "Expression"
+						},
+						"X-TENANT-ID": "gdctest"
+					},
+					"linkedServices": [
+						{
+							"referenceName": "SiteControllerApiLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					]
+				}
+			},
+			{
+				"name": "Get Max Site Controller Pages",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetAllSites",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MAX_SITE_CONTROLLER_PAGES",
+					"value": {
+						"value": "@string(activity('GetAllSites').output.totalPages)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Until All Site Controller Pages",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Get Max Site Controller Pages",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(int(variables('SiteControllerPageCounter')),int(variables('MAX_SITE_CONTROLLER_PAGES')))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy Site Controller Data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"Authorization": {
+											"value": "@concat('Bearer ', activity('WebAuthenticationGetBearerToken').output.access_token)",
+											"type": "Expression"
+										},
+										"X-TENANT-ID": "gdctest"
+									}
+								},
+								"sink": {
+									"type": "SqlServerSink"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "['id']"
+											},
+											"sink": {
+												"name": "SiteID",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "['siteName']"
+											},
+											"sink": {
+												"name": "SiteName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "['timezone']"
+											},
+											"sink": {
+												"name": "TimeZone",
+												"type": "String"
+											}
+										}
+									],
+									"collectionReference": "$['content']"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SiteControllerApiDataSet",
+									"type": "DatasetReference",
+									"parameters": {
+										"site_controller_current_page": {
+											"value": "@variables('SiteControllerPageCounter')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SQLServerSiteControllerDataSet",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "Increment Site Controller Page Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy Site Controller Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempSiteControllerPageNumber",
+								"value": {
+									"value": "@string(add(int(variables('SiteControllerPageCounter')),1))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Assign Increment",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Increment Site Controller Page Counter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "SiteControllerPageCounter",
+								"value": {
+									"value": "@variables('TempSiteControllerPageNumber')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Rest Site Controller Temp Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Assign Increment",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempSiteControllerPageNumber",
+								"value": "0"
+							}
+						}
+					],
+					"timeout": "7.00:00:00"
+				}
+			},
+			{
+				"name": "Execute NavigateAllSites_Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Until All Site Controller Pages",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "NavigateAllSites_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"AuthorizationToken": {
+							"value": "@concat('Bearer ',activity('WebAuthenticationGetBearerToken').output.access_token)",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"variables": {
+			"MAX_SITE_CONTROLLER_PAGES": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"SiteControllerPageCounter": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"TempSiteControllerPageNumber": {
+				"type": "String",
+				"defaultValue": "0"
+			}
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

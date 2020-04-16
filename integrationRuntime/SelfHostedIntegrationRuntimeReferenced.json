@@ -1,0 +1,12 @@
+{
+	"name": "SelfHostedIntegrationRuntimeReferenced",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/ff7bffaf-3b46-421d-bf5a-8a617ba53560/resourcegroups/april8-resourcegroup-1/providers/Microsoft.DataFactory/factories/Comres-Site-Supervisor-ADF/integrationruntimes/SelfHostedIntegrationRuntime",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}

@@ -1,0 +1,24 @@
+{
+	"name": "SiteControllerApiDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SiteControllerApiLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"site_controller_current_page": {
+				"type": "int"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat('?page=',string(dataset().site_controller_current_page))",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

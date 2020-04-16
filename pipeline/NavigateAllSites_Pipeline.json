@@ -1,0 +1,91 @@
+{
+	"name": "NavigateAllSites_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "SiteId_Loopkup",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "SqlServerTable1",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEachSiteId",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SiteId_Loopkup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('SiteId_Loopkup').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Execute GetDevices_Paging_Pipeline",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "GetDeviceControllerData_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"SITE_ID": {
+										"value": "@item().SiteID",
+										"type": "Expression"
+									},
+									"SITE_NAME": {
+										"value": "@item().SiteName",
+										"type": "Expression"
+									},
+									"AuthorizationToken": {
+										"value": "@pipeline().parameters.AuthorizationToken",
+										"type": "Expression"
+									},
+									"SITE_TIMEZONE": {
+										"value": "@item().TimeZone",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"AuthorizationToken": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

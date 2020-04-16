@@ -1,0 +1,27 @@
+{
+	"name": "SiteSpecificDevicesListDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SiteSpecificDeviceListLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"current_page": {
+				"type": "int"
+			},
+			"siteId": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat('api/devices/paging?siteId=',dataset().siteId,'&page=',string(dataset().current_page))",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
