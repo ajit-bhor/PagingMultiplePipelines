@@ -74,11 +74,11 @@
 										"type": "Expression"
 									},
 									"DEVICE_ID": {
-										"value": "@item().DEVICE_ID",
+										"value": "@item().DeviceID",
 										"type": "Expression"
 									},
 									"DEVICE_NAME": {
-										"value": "@item().DEVICE_NAME",
+										"value": "@item().DeviceName",
 										"type": "Expression"
 									}
 								}
