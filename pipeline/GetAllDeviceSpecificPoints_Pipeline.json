@@ -178,7 +178,17 @@
 							"inputs": [
 								{
 									"referenceName": "DevicePointsDataSet",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"deviceId": {
+											"value": "@pipeline().parameters.DEVICE_ID",
+											"type": "Expression"
+										},
+										"current-page": {
+											"value": "@variables('CURRENT-DEVICE-POINTS-PAGE')",
+											"type": "Expression"
+										}
+									}
 								}
 							],
 							"outputs": [
