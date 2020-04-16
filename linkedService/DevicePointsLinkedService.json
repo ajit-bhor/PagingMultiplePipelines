@@ -1,19 +1,17 @@
 {
 	"name": "DevicePointsLinkedService",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
 			"url": "HTTP://192.168.114.134/inventory/",
 			"enableServerCertificateValidation": true,
-			"authenticationType": "Basic",
-			"userName": "adminstrator",
-			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiZGJlMTJkYi04ZGVhLTRiMDEtYTRjMS0wNzcwYmZjMTE1YjIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+			"authenticationType": "Anonymous"
 		},
 		"connectVia": {
 			"referenceName": "SelfHostedIntegrationRuntimeReferenced",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
