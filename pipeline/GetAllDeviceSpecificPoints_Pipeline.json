@@ -3,49 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "GetDeviceSpecificPointsInformation",
-				"type": "WebActivity",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"url": {
-						"value": "@concat('HTTP://192.168.114.134/inventory/api/points/paging?deviceId=',pipeline().parameters.DEVICE_ID)",
-						"type": "Expression"
-					},
-					"connectVia": {
-						"referenceName": "SelfHostedIntegrationRuntimeReferenced",
-						"type": "IntegrationRuntimeReference"
-					},
-					"method": "GET",
-					"headers": {
-						"AuthorizationToken": {
-							"value": "@pipeline().parameters.AuthorizationToken",
-							"type": "Expression"
-						},
-						"X-TENANT-ID": "gdctest"
-					},
-					"linkedServices": [
-						{
-							"referenceName": "DevicePointsLinkedService",
-							"type": "LinkedServiceReference"
-						}
-					],
-					"datasets": []
-				}
-			},
-			{
 				"name": "Get Max DevicePoints Pages",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "GetDeviceSpecificPointsInformation",
+						"activity": "Web1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -290,6 +252,43 @@
 						}
 					],
 					"timeout": "7.00:00:00"
+				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat('HTTP://192.168.114.134/inventory/api/points/paging?deviceId=',pipeline().parameters.DEVICE_ID)",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "GET",
+					"headers": {
+						"Authorization": {
+							"value": "@pipeline().parameters.AuthorizationToken",
+							"type": "Expression"
+						},
+						"X-TENANT-ID": "gdctest"
+					},
+					"linkedServices": [
+						{
+							"referenceName": "RESTDevicePagesLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					]
 				}
 			}
 		],
