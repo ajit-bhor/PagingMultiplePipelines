@@ -1,15 +1,15 @@
 {
-	"name": "DevicePointsDataSet",
+	"name": "RestResource1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SiteSpecificDevicePointsLinkedService",
+			"referenceName": "RESTDevicePagesLinkedService",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
 			"deviceId": {
 				"type": "string"
 			},
-			"current-page": {
+			"currentpage": {
 				"type": "string"
 			}
 		},
@@ -17,7 +17,7 @@
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "@concat('api/points/paging?deviceId=',dataset().deviceId,'&page=',dataset().current-page)",
+				"value": "@concat('api/points/paging?deviceId=',dataset().deviceId,'&page=',dataset().currentpage)",
 				"type": "Expression"
 			}
 		},

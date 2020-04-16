@@ -52,7 +52,7 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "MAX-DEVICE-POINTS-PAGES",
+					"variableName": "MaxDevicePointsPage",
 					"value": {
 						"value": "@string(activity('GetDeviceSpecificPointsInformation').output.totalPages)",
 						"type": "Expression"
@@ -62,7 +62,14 @@
 			{
 				"name": "Until Max Device Specific Points Pages",
 				"type": "Until",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Get Max DevicePoints Pages",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
@@ -71,114 +78,9 @@
 					},
 					"activities": [
 						{
-							"name": "Copy Device-Points Data",
-							"type": "Copy",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "RestSource",
-									"httpRequestTimeout": "00:01:40",
-									"requestInterval": "00.00:00:00.010",
-									"requestMethod": "GET"
-								},
-								"sink": {
-									"type": "SqlServerSink"
-								},
-								"enableStaging": false,
-								"translator": {
-									"type": "TabularTranslator",
-									"mappings": [
-										{
-											"source": {
-												"path": "['id']"
-											},
-											"sink": {
-												"name": "DeviceID",
-												"type": "Int32"
-											}
-										},
-										{
-											"source": {
-												"path": "['deviceName']"
-											},
-											"sink": {
-												"name": "DeviceName",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"path": "$['SITE_ID']"
-											},
-											"sink": {
-												"name": "SiteID",
-												"type": "Int32"
-											}
-										},
-										{
-											"source": {
-												"path": "$['SITE_NAME']"
-											},
-											"sink": {
-												"name": "SiteName",
-												"type": "String"
-											}
-										},
-										{
-											"source": {
-												"path": "$['SITE_TIMEZONE']"
-											},
-											"sink": {
-												"name": "TimeZone",
-												"type": "String"
-											}
-										}
-									],
-									"collectionReference": "$['content']"
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "DevicePointsDataSet",
-									"type": "DatasetReference",
-									"parameters": {
-										"deviceId": {
-											"value": "@pipeline().parameters.DEVICE_ID",
-											"type": "Expression"
-										},
-										"current-page": {
-											"value": "@variables('CURRENT-DEVICE-POINTS-PAGE')",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "SqlServerTable2",
-									"type": "DatasetReference"
-								}
-							]
-						},
-						{
 							"name": "Add Site Device Counter",
 							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Copy Device-Points Data",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "SiteDevices-TempCounter",
@@ -224,6 +126,64 @@
 								"variableName": "SiteDevices-TempCounter",
 								"value": "0"
 							}
+						},
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"additionalHeaders": {
+										"Authorization": {
+											"value": "@pipeline().parameters.AuthorizationToken",
+											"type": "Expression"
+										},
+										"X-TENANT-ID": "gdctest"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "RestResource1",
+									"type": "DatasetReference",
+									"parameters": {
+										"deviceId": {
+											"value": "@pipeline().parameters.DEVICE_ID",
+											"type": "Expression"
+										},
+										"currentpage": {
+											"value": "@variables('CurrentDevicePointPage')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Add Device Points Page Counter",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCounter",
+								"value": {
+									"value": "@add(int(variables('CurrentDevicePointPage')),1)",
+									"type": "Expression"
+								}
+							}
 						}
 					],
 					"timeout": "7.00:00:00"
@@ -251,13 +211,13 @@
 			}
 		},
 		"variables": {
-			"MAX-DEVICE-POINTS-PAGES": {
+			"MaxDevicePointsPage": {
 				"type": "String"
 			},
-			"CURRENT-DEVICE-POINTS-PAGE": {
+			"CurrentDevicePointPage": {
 				"type": "String"
 			},
-			"TEMP-DEVICE-POINTS-PAGE": {
+			"TempCounter": {
 				"type": "String"
 			}
 		},
