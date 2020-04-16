@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"variableName": "MaxDevicePointsPage",
 					"value": {
-						"value": "@string(activity('Web1').output.access_token)",
+						"value": "@string(activity('Web1').output.totalPages)",
 						"type": "Expression"
 					}
 				}
