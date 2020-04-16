@@ -140,7 +140,79 @@
 										"X-TENANT-ID": "gdctest"
 									}
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "SqlServerSink"
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"path": "['id']"
+											},
+											"sink": {
+												"name": "PointID",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "['pointName']"
+											},
+											"sink": {
+												"name": "PointName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['SITE-ID']"
+											},
+											"sink": {
+												"name": "SiteID",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['SITE-NAME']"
+											},
+											"sink": {
+												"name": "SiteName",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['TIME-ZONE']"
+											},
+											"sink": {
+												"name": "TimeZone",
+												"type": "String"
+											}
+										},
+										{
+											"source": {
+												"path": "$['DEVICE-ID']"
+											},
+											"sink": {
+												"name": "DeviceID",
+												"type": "Int32"
+											}
+										},
+										{
+											"source": {
+												"path": "$['DEVICE-NAME']"
+											},
+											"sink": {
+												"name": "DeviceName",
+												"type": "String"
+											}
+										}
+									],
+									"collectionReference": "$['content']"
+								}
 							},
 							"inputs": [
 								{
@@ -156,6 +228,12 @@
 											"type": "Expression"
 										}
 									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SqlServerSiteDevicePointsDataSet",
+									"type": "DatasetReference"
 								}
 							]
 						},

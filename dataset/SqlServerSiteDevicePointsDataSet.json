@@ -1,0 +1,48 @@
+{
+	"name": "SqlServerSiteDevicePointsDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServerSiteDevicePointsLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "SiteID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SiteName",
+				"type": "varchar"
+			},
+			{
+				"name": "TimeZone",
+				"type": "varchar"
+			},
+			{
+				"name": "DeviceID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DeviceName",
+				"type": "varchar"
+			},
+			{
+				"name": "PointID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PointName",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "site_devices_points"
+		}
+	}
+}
