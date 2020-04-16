@@ -201,31 +201,11 @@
 							]
 						},
 						{
-							"name": "Add Device Points Page Counter",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Copy Device Points Data",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "TempCounter",
-								"value": {
-									"value": "@string(add(int(variables('CurrentDevicePointPage')),1))",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "Assign Addition",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Add Device Points Page Counter",
+									"activity": "Set variable1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -255,6 +235,26 @@
 							"typeProperties": {
 								"variableName": "TempCounter",
 								"value": "0"
+							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Copy Device Points Data",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TempCounter",
+								"value": {
+									"value": "@string(add(int(variables('CurrentDevicePointPage')),1))",
+									"type": "Expression"
+								}
 							}
 						}
 					],
