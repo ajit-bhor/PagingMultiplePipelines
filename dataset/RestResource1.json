@@ -17,7 +17,7 @@
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "@concat('api/points/paging?deviceId=',dataset().deviceId,'&page=',dataset().currentpage)",
+				"value": "@concat('api/points/paging?deviceId=',dataset().deviceId,'&page=',string(dataset().currentpage))",
 				"type": "Expression"
 			}
 		},
