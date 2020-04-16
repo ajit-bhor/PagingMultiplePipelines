@@ -1,0 +1,39 @@
+{
+	"name": "SqlServerSiteDeviceDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServerSiteDeviceLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "SiteID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SiteName",
+				"type": "varchar"
+			},
+			{
+				"name": "TimeZone",
+				"type": "varchar"
+			},
+			{
+				"name": "DeviceID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DeviceName",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "site_devices"
+		}
+	}
+}
