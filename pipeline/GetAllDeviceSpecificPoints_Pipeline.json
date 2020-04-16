@@ -321,13 +321,16 @@
 		},
 		"variables": {
 			"MaxDevicePointsPage": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "0"
 			},
 			"TempCounter": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "0"
 			},
 			"CurrentPageCounter": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"annotations": []
