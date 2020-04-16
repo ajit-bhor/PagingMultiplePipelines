@@ -265,6 +265,32 @@
 					],
 					"timeout": "7.00:00:00"
 				}
+			},
+			{
+				"name": "NavigateAllSiteSpecificDevices_Pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Until Max Site Specific Device Pages",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "NavigateAllSiteSpecificDevices_Pipeline",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"AuthorizationToken": {
+							"value": "@pipeline().parameters.AuthorizationToken",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"parameters": {
