@@ -1,0 +1,8 @@
+{
+	"name": "DevicePointsDataSet",
+	"properties": {
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}
