@@ -36,7 +36,8 @@
 							"referenceName": "DevicePointsLinkedService",
 							"type": "LinkedServiceReference"
 						}
-					]
+					],
+					"datasets": []
 				}
 			},
 			{
