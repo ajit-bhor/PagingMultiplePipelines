@@ -73,7 +73,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@lessOrEquals(int(variables('MAX-DEVICE-POINTS-PAGES')),int(variables('CURRENT-DEVICE-POINTS-PAGE')))",
+						"value": "@lessOrEquals(int(variables('MaxDevicePointsPage')),int(variables('CurrentDevicePointPage')))",
 						"type": "Expression"
 					},
 					"activities": [
