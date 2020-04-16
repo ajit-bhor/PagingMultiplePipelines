@@ -15,12 +15,6 @@
 		},
 		"annotations": [],
 		"type": "RestResource",
-		"typeProperties": {
-			"relativeUrl": {
-				"value": "@concat('api/points/paging?deviceId=',dataset().deviceId,'&page=',dataset().current-page)",
-				"type": "Expression"
-			}
-		},
 		"schema": []
 	}
 }

@@ -85,39 +85,9 @@
 							"typeProperties": {
 								"source": {
 									"type": "RestSource",
-									"additionalColumns": [
-										{
-											"name": "SITE_ID",
-											"value": {
-												"value": "@pipeline().parameters.SITE_ID",
-												"type": "Expression"
-											}
-										},
-										{
-											"name": "SITE_NAME",
-											"value": {
-												"value": "@pipeline().parameters.SITE_NAME",
-												"type": "Expression"
-											}
-										},
-										{
-											"name": "SITE_TIMEZONE",
-											"value": {
-												"value": "@pipeline().parameters.SITE_TIMEZONE",
-												"type": "Expression"
-											}
-										}
-									],
 									"httpRequestTimeout": "00:01:40",
 									"requestInterval": "00.00:00:00.010",
-									"requestMethod": "GET",
-									"additionalHeaders": {
-										"Authorization": {
-											"value": "@pipeline().parameters.AuthorizationToken",
-											"type": "Expression"
-										},
-										"X-TENANT-ID": "gdctest"
-									}
+									"requestMethod": "GET"
 								},
 								"sink": {
 									"type": "SqlServerSink"
