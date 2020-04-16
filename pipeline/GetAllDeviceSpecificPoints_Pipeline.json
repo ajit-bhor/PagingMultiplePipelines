@@ -53,7 +53,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "MAX-DEVICE-POINTS-PAGES",
-					"value": ""
+					"value": {
+						"value": "@string(activity('GetDeviceSpecificPointsInformation').output.totalPages)",
+						"type": "Expression"
+					}
 				}
 			}
 		],
