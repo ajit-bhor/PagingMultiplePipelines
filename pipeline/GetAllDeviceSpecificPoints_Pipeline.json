@@ -36,7 +36,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@lessOrEquals(int(variables('MaxDevicePointsPage')),int(variables('CurrentDevicePointPage')))",
+						"value": "@lessOrEquals(int(variables('MaxDevicePointsPage')),int(variables('CurrentPageCounter')))",
 						"type": "Expression"
 					},
 					"activities": [
@@ -187,7 +187,7 @@
 											"type": "Expression"
 										},
 										"currentpage": {
-											"value": "@variables('CurrentDevicePointPage')",
+											"value": "@int(variables('CurrentPageCounter'))",
 											"type": "Expression"
 										}
 									}
@@ -252,7 +252,7 @@
 							"typeProperties": {
 								"variableName": "TempCounter",
 								"value": {
-									"value": "@string(add(int(variables('CurrentDevicePointPage')),1))",
+									"value": "@string(add(int(variables('CurrentPageCounter')),1))",
 									"type": "Expression"
 								}
 							}
@@ -323,10 +323,10 @@
 			"MaxDevicePointsPage": {
 				"type": "String"
 			},
-			"CurrentDevicePointPage": {
+			"TempCounter": {
 				"type": "String"
 			},
-			"TempCounter": {
+			"CurrentPageCounter": {
 				"type": "String"
 			}
 		},
