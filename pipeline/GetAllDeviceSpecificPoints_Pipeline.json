@@ -13,7 +13,48 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"url": {
+						"value": "@concat('HTTP://192.168.114.134/inventory/api/points/paging?deviceId=',pipeline().parameters.DEVICE_ID)",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "GET",
+					"headers": {
+						"AuthorizationToken": {
+							"value": "@pipeline().parameters.AuthorizationToken",
+							"type": "Expression"
+						},
+						"X-TENANT-ID": "gdctest"
+					},
+					"linkedServices": [
+						{
+							"referenceName": "DevicePointsLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					]
+				}
+			},
+			{
+				"name": "Get Max DevicePoints Pages",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "GetDeviceSpecificPointsInformation",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MAX-DEVICE-POINTS-PAGES",
+					"value": ""
+				}
 			}
 		],
 		"parameters": {
@@ -34,6 +75,17 @@
 			},
 			"DEVICE_NAME": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"MAX-DEVICE-POINTS-PAGES": {
+				"type": "String"
+			},
+			"CURRENT-DEVICE-POINTS-PAGE": {
+				"type": "String"
+			},
+			"TEMP-DEVICE-POINTS-PAGE": {
+				"type": "String"
 			}
 		},
 		"annotations": []
