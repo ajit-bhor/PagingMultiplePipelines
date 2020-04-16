@@ -1,6 +1,41 @@
 {
 	"name": "GetAllDeviceSpecificPoints_Pipeline",
 	"properties": {
+		"activities": [
+			{
+				"name": "GetDeviceSpecificPointsInformation",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": []
+			}
+		],
+		"parameters": {
+			"SITE_ID": {
+				"type": "string"
+			},
+			"SITE_NAME": {
+				"type": "string"
+			},
+			"SITE_TIMEZONE": {
+				"type": "string"
+			},
+			"AuthorizationToken": {
+				"type": "string"
+			},
+			"DEVICE_ID": {
+				"type": "string"
+			},
+			"DEVICE_NAME": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }

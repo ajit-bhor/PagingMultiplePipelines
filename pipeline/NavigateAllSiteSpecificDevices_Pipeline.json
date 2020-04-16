@@ -55,7 +55,33 @@
 									"referenceName": "GetAllDeviceSpecificPoints_Pipeline",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"SITE_ID": {
+										"value": "@item().SiteID",
+										"type": "Expression"
+									},
+									"SITE_NAME": {
+										"value": "@item().SiteName",
+										"type": "Expression"
+									},
+									"SITE_TIMEZONE": {
+										"value": "@item().TimeZone",
+										"type": "Expression"
+									},
+									"AuthorizationToken": {
+										"value": "@pipeline().parameters.AuthorizationToken",
+										"type": "Expression"
+									},
+									"DEVICE_ID": {
+										"value": "@item().DEVICE_ID",
+										"type": "Expression"
+									},
+									"DEVICE_NAME": {
+										"value": "@item().DEVICE_NAME",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
