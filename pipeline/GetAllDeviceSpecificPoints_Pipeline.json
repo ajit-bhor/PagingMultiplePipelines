@@ -104,7 +104,7 @@
 									"requestMethod": "GET",
 									"additionalHeaders": {
 										"Authorization": {
-											"value": "@activity('Copy1-AuthenticateForPointsAPI').output.access_token",
+											"value": "@concat('Bearer ',activity('Copy1-AuthenticateForPointsAPI').output.access_token)",
 											"type": "Expression"
 										},
 										"X-TENANT-ID": "gdctest"
@@ -294,7 +294,8 @@
 										"referenceName": "AuthenticationApiLinkedService",
 										"type": "LinkedServiceReference"
 									}
-								]
+								],
+								"datasets": []
 							}
 						}
 					],
@@ -332,7 +333,7 @@
 					"method": "GET",
 					"headers": {
 						"Authorization": {
-							"value": "@activity('AuthenticateForPointsAPI').output.access_token",
+							"value": "@concat('Bearer ',activity('AuthenticateForPointsAPI').output.access_token)",
 							"type": "Expression"
 						},
 						"X-TENANT-ID": "gdctest"
