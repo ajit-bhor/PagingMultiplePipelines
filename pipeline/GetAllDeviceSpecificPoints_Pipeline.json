@@ -7,7 +7,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "Get Device Points",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -302,7 +302,7 @@
 				}
 			},
 			{
-				"name": "Web1",
+				"name": "Get Device Points",
 				"type": "WebActivity",
 				"dependsOn": [
 					{
