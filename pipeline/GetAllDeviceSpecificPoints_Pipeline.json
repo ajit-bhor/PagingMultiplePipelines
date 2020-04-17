@@ -43,7 +43,14 @@
 						{
 							"name": "Copy Device Points Data",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Copy1-AuthenticateForPointsAPI",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -97,7 +104,7 @@
 									"requestMethod": "GET",
 									"additionalHeaders": {
 										"Authorization": {
-											"value": "@pipeline().parameters.AuthorizationToken",
+											"value": "@activity('Copy1-AuthenticateForPointsAPI').output.access_token",
 											"type": "Expression"
 										},
 										"X-TENANT-ID": "gdctest"
@@ -256,6 +263,40 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Copy1-AuthenticateForPointsAPI",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "http://192.168.114.134/uaa/auth?password=pass&username=administrator",
+								"connectVia": {
+									"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+									"type": "IntegrationRuntimeReference"
+								},
+								"method": "POST",
+								"headers": {
+									"Content-Type": "application/x-www-form-urlencoded",
+									"X-TENANT-ID": "gdctest",
+									"Accept": "application/json"
+								},
+								"body": "'none'",
+								"linkedServices": [
+									{
+										"referenceName": "AuthenticationApiLinkedService",
+										"type": "LinkedServiceReference"
+									}
+								],
+								"datasets": []
+							}
 						}
 					],
 					"timeout": "7.00:00:00"
@@ -264,7 +305,14 @@
 			{
 				"name": "Web1",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "AuthenticateForPointsAPI",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -285,7 +333,7 @@
 					"method": "GET",
 					"headers": {
 						"Authorization": {
-							"value": "@pipeline().parameters.AuthorizationToken",
+							"value": "@activity('AuthenticateForPointsAPI').output.access_token",
 							"type": "Expression"
 						},
 						"X-TENANT-ID": "gdctest"
@@ -293,6 +341,39 @@
 					"linkedServices": [
 						{
 							"referenceName": "RESTDevicePagesLinkedService",
+							"type": "LinkedServiceReference"
+						}
+					]
+				}
+			},
+			{
+				"name": "AuthenticateForPointsAPI",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "http://192.168.114.134/uaa/auth?password=pass&username=administrator",
+					"connectVia": {
+						"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+						"type": "IntegrationRuntimeReference"
+					},
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/x-www-form-urlencoded",
+						"X-TENANT-ID": "gdctest",
+						"Accept": "application/json"
+					},
+					"body": "'none'",
+					"linkedServices": [
+						{
+							"referenceName": "AuthenticationApiLinkedService",
 							"type": "LinkedServiceReference"
 						}
 					]
