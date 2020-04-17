@@ -46,7 +46,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Execute GetDevices_Paging_Pipeline",
+							"name": "Execute GetDeviceControllerData_Pipeline",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],
