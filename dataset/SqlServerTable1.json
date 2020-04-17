@@ -18,12 +18,7 @@
 				"type": "varchar"
 			},
 			{
-				"name": "DeviceID",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "DeviceName",
+				"name": "TimeZone",
 				"type": "varchar"
 			}
 		],
