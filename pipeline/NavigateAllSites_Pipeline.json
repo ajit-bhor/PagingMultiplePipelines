@@ -75,37 +75,6 @@
 									}
 								}
 							}
-						},
-						{
-							"name": "Execute GetDevices_Paging_Pipeline_copy1",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "GetDeviceControllerData_Pipeline",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true,
-								"parameters": {
-									"SITE_ID": {
-										"value": "@item().SiteID",
-										"type": "Expression"
-									},
-									"SITE_NAME": {
-										"value": "@item().SiteName",
-										"type": "Expression"
-									},
-									"AuthorizationToken": {
-										"value": "@pipeline().parameters.AuthorizationToken",
-										"type": "Expression"
-									},
-									"SITE_TIMEZONE": {
-										"value": "@item().TimeZone",
-										"type": "Expression"
-									}
-								}
-							}
 						}
 					]
 				}
