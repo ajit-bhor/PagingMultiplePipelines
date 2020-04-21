@@ -1,0 +1,263 @@
+{
+	"name": "NavigateAllDeviceSpecificPointIDs_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup Get Total Point IDs",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SqlServerSource",
+						"sqlReaderQuery": "select count(*) as TOTAL_DEVICE_POINTS from dbo.site_devices_points",
+						"queryTimeout": "02:00:00"
+					},
+					"dataset": {
+						"referenceName": "SqlServerAllDeviceSpecificPointsDataSet",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Set MAX Point IDs",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup Get Total Point IDs",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_max_device_points_rows",
+					"value": {
+						"value": "@string(activity('Lookup Get Total Point IDs').output.value[0].TOTAL_DEVICE_POINTS)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Number Of Lookup Iterations",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set MAX Point IDs",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_max_lookup_iterations",
+					"value": {
+						"value": "@if(bool(equals(mod(int(variables('var_max_device_points_rows')),int(variables('var_lookup_activity_max_limit'))),0)),string(div(int(variables('var_max_device_points_rows')),int(variables('var_lookup_activity_max_limit')))),string(add(div(int(variables('var_max_device_points_rows')),int(variables('var_lookup_activity_max_limit'))),1)))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Loop through All Iterations",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Get Number Of Lookup Iterations",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@bool(lessOrEquals(int(variables('var_max_lookup_iterations')),int(variables('var_current_lookup_iteration'))))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Increment Loop Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Lookup Data Between Specified Rows",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_temp",
+								"value": {
+									"value": "@string(add(int(variables('var_current_lookup_iteration')),1))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Loop Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Increment Loop Counter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_current_lookup_iteration",
+								"value": {
+									"value": "@variables('var_temp')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Reset Temporary Counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set Loop Counter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_temp",
+								"value": "0"
+							}
+						},
+						{
+							"name": "Set Lookup Start",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_lookup_start",
+								"value": {
+									"value": "@string(add(mul(int(variables('var_current_lookup_iteration')),int(variables('var_lookup_activity_max_limit'))),1))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Lookup End",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set Lookup Start",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_lookup_end",
+								"value": {
+									"value": "@string(mul(add(int(variables('var_current_lookup_iteration')),1),int(variables('var_lookup_activity_max_limit'))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Lookup Data Between Specified Rows",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Set Lookup End",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"sqlReaderStoredProcedureName": "[dbo].[sp_get_data_between_specified_rows]",
+									"storedProcedureParameters": {
+										"LookupEnd": {
+											"type": "String",
+											"value": {
+												"value": "@variables('var_lookup_end')",
+												"type": "Expression"
+											}
+										},
+										"LookupStart": {
+											"type": "String",
+											"value": {
+												"value": "@variables('var_lookup_start')",
+												"type": "Expression"
+											}
+										}
+									},
+									"queryTimeout": "02:00:00"
+								},
+								"dataset": {
+									"referenceName": "SqlServerAllDeviceSpecificPointsDataSet",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
+							}
+						}
+					],
+					"timeout": "7.00:00:00"
+				}
+			}
+		],
+		"variables": {
+			"var_max_device_points_rows": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"var_max_lookup_iterations": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"var_lookup_activity_max_limit": {
+				"type": "String",
+				"defaultValue": "5000"
+			},
+			"var_lookup_start": {
+				"type": "String",
+				"defaultValue": "1"
+			},
+			"var_lookup_end": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"var_temp": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"var_current_lookup_iteration": {
+				"type": "String",
+				"defaultValue": "0"
+			}
+		},
+		"annotations": []
+	}
+}
