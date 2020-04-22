@@ -1,0 +1,19 @@
+{
+	"name": "RESTLogControllerPAI",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "http://192.168.114.134/log/api/log/get",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Basic",
+			"userName": "administrator",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiI3OWUzMTA4MS1mNWQwLTQ4YWMtOWEzNy1iMjBkMzViMjIxOTIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
