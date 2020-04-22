@@ -119,8 +119,7 @@
 													"referenceName": "AuthenticationApiLinkedService",
 													"type": "LinkedServiceReference"
 												}
-											],
-											"datasets": []
+											]
 										}
 									},
 									{
