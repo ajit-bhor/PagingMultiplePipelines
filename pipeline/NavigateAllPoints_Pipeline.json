@@ -61,7 +61,10 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"url": "http://192.168.114.134/log/api/log/get/1089?endTime=1587096258000&startTime=-2208988800",
+								"url": {
+									"value": "@concat('http://192.168.114.134/log/api/log/get/',string(item().PointID),'?endTime=1587096258000&startTime=-2208988800')",
+									"type": "Expression"
+								},
 								"connectVia": {
 									"referenceName": "SelfHostedIntegrationRuntimeReferenced",
 									"type": "IntegrationRuntimeReference"
