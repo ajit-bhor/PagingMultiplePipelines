@@ -1,0 +1,167 @@
+{
+	"name": "NavigateAllPoints_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "ForEach1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "temp",
+					"value": "1"
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.lookup_data",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "temp_2",
+								"value": "1"
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"lookup_data": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"rownumber": 11,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 231,
+						"PointName": "HT Min Off Time"
+					},
+					{
+						"rownumber": 12,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 232,
+						"PointName": "CL Min On Time"
+					},
+					{
+						"rownumber": 13,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 233,
+						"PointName": "CL Min Off Time"
+					},
+					{
+						"rownumber": 14,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 234,
+						"PointName": "Spare 7013"
+					},
+					{
+						"rownumber": 15,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 235,
+						"PointName": "HT Curtail Stgs"
+					},
+					{
+						"rownumber": 16,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 236,
+						"PointName": "CL Curtail Stgs"
+					},
+					{
+						"rownumber": 17,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 237,
+						"PointName": "Heat Lockout En"
+					},
+					{
+						"rownumber": 18,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 238,
+						"PointName": "Cool Lockout En"
+					},
+					{
+						"rownumber": 19,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 239,
+						"PointName": "ReclHTDehumStgs"
+					},
+					{
+						"rownumber": 20,
+						"SiteID": 7,
+						"SiteName": "Site Kennesaw",
+						"TimeZone": "America/New_York",
+						"DeviceID": 208,
+						"DeviceName": "abc2",
+						"PointID": 240,
+						"PointName": "Aux Heat Dehum"
+					}
+				]
+			}
+		},
+		"variables": {
+			"temp": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"temp_2": {
+				"type": "String",
+				"defaultValue": "0"
+			}
+		},
+		"annotations": []
+	}
+}

@@ -90,7 +90,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Lookup Data Between Specified Rows",
+									"activity": "Execute Pipeline1",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -222,6 +222,32 @@
 								},
 								"firstRowOnly": false
 							}
+						},
+						{
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Lookup Data Between Specified Rows",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "NavigateAllPoints_Pipeline",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"lookup_data": {
+										"value": "@activity('Lookup Data Between Specified Rows').output.value",
+										"type": "Expression"
+									}
+								}
+							}
 						}
 					],
 					"timeout": "7.00:00:00"
@@ -239,7 +265,7 @@
 			},
 			"var_lookup_activity_max_limit": {
 				"type": "String",
-				"defaultValue": "5000"
+				"defaultValue": "10"
 			},
 			"var_lookup_start": {
 				"type": "String",
