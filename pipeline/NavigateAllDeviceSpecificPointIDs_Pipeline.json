@@ -49,7 +49,7 @@
 				"typeProperties": {
 					"variableName": "var_max_device_points_rows",
 					"value": {
-						"value": "28",
+						"value": "7",
 						"type": "Expression"
 					}
 				}
@@ -249,7 +249,10 @@
 								},
 								"waitOnCompletion": true,
 								"parameters": {
-									"lookup_data": "@activity('Lookup Data Between Specified Rows').output.value",
+									"lookup_data": {
+										"value": "@activity('Lookup Data Between Specified Rows').output.value",
+										"type": "Expression"
+									},
 									"Authorization_Token": {
 										"value": "@activity('GetBearerToken').output.access_token",
 										"type": "Expression"
@@ -306,7 +309,7 @@
 			},
 			"var_lookup_activity_max_limit": {
 				"type": "String",
-				"defaultValue": "10"
+				"defaultValue": "5"
 			},
 			"var_lookup_start": {
 				"type": "String",
