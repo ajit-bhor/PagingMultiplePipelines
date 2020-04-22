@@ -1,0 +1,90 @@
+{
+	"name": "SqlServerTable3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SqlServerLogDataLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SqlServerTable",
+		"schema": [
+			{
+				"name": "SiteID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "SiteName",
+				"type": "varchar"
+			},
+			{
+				"name": "TimeZone",
+				"type": "varchar"
+			},
+			{
+				"name": "DeviceID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DeviceName",
+				"type": "varchar"
+			},
+			{
+				"name": "PointID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PointName",
+				"type": "varchar"
+			},
+			{
+				"name": "gmtLastLogTimeStamp",
+				"type": "varchar"
+			},
+			{
+				"name": "lastLogTimeStamp",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "logInstId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "logInterval",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "logType",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "logstatus",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "logtimeStamp",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "logvalue",
+				"type": "varchar"
+			},
+			{
+				"name": "error",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "site_devices_points_log"
+		}
+	}
+}

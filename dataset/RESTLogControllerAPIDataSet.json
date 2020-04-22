@@ -1,0 +1,23 @@
+{
+	"name": "RESTLogControllerAPIDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RESTLogControllerAPILinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"PointID": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat(string(dataset().PointID),'?endTime=',string(div(sub(ticks(utcnow()),ticks('1970-01-01')),10000000)),'&startTime=',string(div(sub(ticks(adddays(utcnow(),-7)),ticks('1970-01-01')),10000000)))",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}
