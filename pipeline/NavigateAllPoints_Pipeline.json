@@ -34,11 +34,47 @@
 						{
 							"name": "Set variable2",
 							"type": "SetVariable",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Get Log For PointId",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "temp_2",
 								"value": "1"
+							}
+						},
+						{
+							"name": "Get Log For PointId",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "http://192.168.114.134/log/api/log/get/1089?endTime=1587096258000&startTime=-2208988800",
+								"connectVia": {
+									"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+									"type": "IntegrationRuntimeReference"
+								},
+								"method": "GET",
+								"headers": {
+									"Authorization": {
+										"value": "@pipeline().parameters.Authorization_Token",
+										"type": "Expression"
+									},
+									"X-TENANT-ID": "gdctest",
+									"accept": "application/json"
+								}
 							}
 						}
 					]
@@ -150,6 +186,9 @@
 						"PointName": "Aux Heat Dehum"
 					}
 				]
+			},
+			"Authorization_Token": {
+				"type": "string"
 			}
 		},
 		"variables": {
