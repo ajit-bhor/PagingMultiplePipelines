@@ -62,7 +62,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"url": {
-									"value": "@concat('http://192.168.114.134/log/api/log/get/',string(item().PointID),'?endTime=1587096258000&startTime=-2208988800')",
+									"value": "@concat('http://192.168.114.134/log/api/log/get/',string(item().PointID),'?endTime=',string(div(sub(ticks(utcnow()),ticks('1970-01-01')),10000000)),'&startTime=',string(div(sub(ticks(adddays(utcnow(),-7)),ticks('1970-01-01')),10000000)))",
 									"type": "Expression"
 								},
 								"connectVia": {
