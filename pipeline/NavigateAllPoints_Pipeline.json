@@ -385,7 +385,7 @@
 								{
 									"activity": "If Condition1",
 									"dependencyConditions": [
-										"Succeeded"
+										"Completed"
 									]
 								}
 							],

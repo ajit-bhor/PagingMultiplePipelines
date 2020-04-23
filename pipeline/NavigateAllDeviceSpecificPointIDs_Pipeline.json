@@ -252,7 +252,7 @@
 								"parameters": {
 									"lookup_data": "@activity('Lookup Data Between Specified Rows').output.value",
 									"Authorization_Token": "@concat('Bearer ',activity('GetBearerToken').output.access_token)",
-									"var_remaining_point_ids": {
+									"var_parameter_remaining_point_ids": {
 										"value": "@variables('var_remaining_pointIds')",
 										"type": "Expression"
 									}
