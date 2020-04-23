@@ -1,0 +1,2629 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "Multiple-Pipelines"
+		},
+		"SiteControllerApiLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SiteControllerApiLinkedService'"
+		},
+		"SiteDevicesLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SiteDevicesLinkedService'"
+		},
+		"SiteSpecificDevicePointsLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SiteSpecificDevicePointsLinkedService'"
+		},
+		"SqlServerSiteControllerLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteControllerLinkedService'"
+		},
+		"SiteControllerApiLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/api/sites/paging"
+		},
+		"SiteControllerApiLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"SiteDevicesLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/"
+		},
+		"SiteDevicesLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"SiteSpecificDeviceListLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/"
+		},
+		"SiteSpecificDevicePointsLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/"
+		},
+		"SiteSpecificDevicePointsLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SiteControllerApiLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('SiteControllerApiLinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('SiteControllerApiLinkedService_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SiteControllerApiLinkedService_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SiteDevicesLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('SiteDevicesLinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('SiteDevicesLinkedService_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SiteDevicesLinkedService_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SiteSpecificDeviceListLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('SiteSpecificDeviceListLinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SiteSpecificDevicePointsLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('SiteSpecificDevicePointsLinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('SiteSpecificDevicePointsLinkedService_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SiteSpecificDevicePointsLinkedService_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerSiteControllerLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServerSiteControllerLinkedService_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RESTLogControllerAPIDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RESTLogControllerAPILinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"PointID": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@concat(string(dataset().PointID),'?endTime=',string(div(sub(ticks(utcnow()),ticks('1970-01-01')),10000000)),'&startTime=',string(div(sub(ticks(adddays(utcnow(),-7)),ticks('1970-01-01')),10000000)))",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RestResource1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "RESTDevicePagesLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"deviceId": {
+						"type": "string"
+					},
+					"currentpage": {
+						"type": "int"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@concat('api/points/paging?deviceId=',dataset().deviceId,'&page=',string(dataset().currentpage))",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SQLServerSiteControllerDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerSiteControllerLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "SiteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SiteName",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "sitecontroller"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerSiteControllerLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SiteControllerApiDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SiteControllerApiLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"site_controller_current_page": {
+						"type": "int"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@concat('?page=',string(dataset().site_controller_current_page))",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SiteControllerApiLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SiteSpecificDevicesListDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SiteSpecificDeviceListLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"current_page": {
+						"type": "int"
+					},
+					"siteId": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "RestResource",
+				"typeProperties": {
+					"relativeUrl": {
+						"value": "@concat('api/devices/paging?siteId=',dataset().siteId,'&page=',string(dataset().current_page))",
+						"type": "Expression"
+					}
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SiteSpecificDeviceListLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetAllDeviceSpecificPoints_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Max DevicePoints Pages",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Get Device Points",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "MaxDevicePointsPage",
+							"value": {
+								"value": "@string(activity('Get Device Points').output.totalPages)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Until Max Device Specific Points Pages",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Get Max DevicePoints Pages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@lessOrEquals(int(variables('MaxDevicePointsPage')),int(variables('CurrentPageCounter')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy Device Points Data",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "Copy1-AuthenticateForPointsAPI",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "RestSource",
+											"additionalColumns": [
+												{
+													"name": "SITE-ID",
+													"value": {
+														"value": "@pipeline().parameters.SITE_ID",
+														"type": "Expression"
+													}
+												},
+												{
+													"name": "SITE-NAME",
+													"value": {
+														"value": "@pipeline().parameters.SITE_NAME",
+														"type": "Expression"
+													}
+												},
+												{
+													"name": "TIME-ZONE",
+													"value": {
+														"value": "@pipeline().parameters.SITE_TIMEZONE",
+														"type": "Expression"
+													}
+												},
+												{
+													"name": "DEVICE-ID",
+													"value": {
+														"value": "@pipeline().parameters.DEVICE_ID",
+														"type": "Expression"
+													}
+												},
+												{
+													"name": "DEVICE-NAME",
+													"value": {
+														"value": "@pipeline().parameters.DEVICE_NAME",
+														"type": "Expression"
+													}
+												}
+											],
+											"httpRequestTimeout": "00:01:40",
+											"requestInterval": "00.00:00:00.010",
+											"requestMethod": "GET",
+											"additionalHeaders": {
+												"Authorization": {
+													"value": "@concat('Bearer ',activity('Copy1-AuthenticateForPointsAPI').output.access_token)",
+													"type": "Expression"
+												},
+												"X-TENANT-ID": "gdctest"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"path": "[['id']"
+													},
+													"sink": {
+														"name": "PointID",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"path": "[['pointName']"
+													},
+													"sink": {
+														"name": "PointName",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"path": "$['SITE-ID']"
+													},
+													"sink": {
+														"name": "SiteID",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"path": "$['SITE-NAME']"
+													},
+													"sink": {
+														"name": "SiteName",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"path": "$['TIME-ZONE']"
+													},
+													"sink": {
+														"name": "TimeZone",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"path": "$['DEVICE-ID']"
+													},
+													"sink": {
+														"name": "DeviceID",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"path": "$['DEVICE-NAME']"
+													},
+													"sink": {
+														"name": "DeviceName",
+														"type": "String"
+													}
+												}
+											],
+											"collectionReference": "$['content']"
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "RestResource1",
+											"type": "DatasetReference",
+											"parameters": {
+												"deviceId": {
+													"value": "@pipeline().parameters.DEVICE_ID",
+													"type": "Expression"
+												},
+												"currentpage": {
+													"value": "@variables('CurrentPageCounter')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SqlServerSiteDevicePointsDataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "Assign Addition",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set variable1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "CurrentPageCounter",
+										"value": {
+											"value": "@variables('TempCounter')",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Reset Temp Variable",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Assign Addition",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "TempCounter",
+										"value": "0"
+									}
+								},
+								{
+									"name": "Set variable1",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Copy Device Points Data",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "TempCounter",
+										"value": {
+											"value": "@string(add(int(variables('CurrentPageCounter')),1))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Copy1-AuthenticateForPointsAPI",
+									"type": "WebActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": "http://192.168.114.134/uaa/auth?password=pass&username=administrator",
+										"connectVia": {
+											"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+											"type": "IntegrationRuntimeReference"
+										},
+										"method": "POST",
+										"headers": {
+											"Content-Type": "application/x-www-form-urlencoded",
+											"X-TENANT-ID": "gdctest",
+											"Accept": "application/json"
+										},
+										"body": "'none'",
+										"linkedServices": [
+											{
+												"referenceName": "AuthenticationApiLinkedService",
+												"type": "LinkedServiceReference"
+											}
+										],
+										"datasets": []
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "Get Device Points",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "AuthenticateForPointsAPI",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('HTTP://192.168.114.134/inventory/api/points/paging?deviceId=',pipeline().parameters.DEVICE_ID)",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "GET",
+							"headers": {
+								"Authorization": {
+									"value": "@concat('Bearer ',activity('AuthenticateForPointsAPI').output.access_token)",
+									"type": "Expression"
+								},
+								"X-TENANT-ID": "gdctest"
+							},
+							"linkedServices": [
+								{
+									"referenceName": "RESTDevicePagesLinkedService",
+									"type": "LinkedServiceReference"
+								}
+							],
+							"datasets": []
+						}
+					},
+					{
+						"name": "AuthenticateForPointsAPI",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://192.168.114.134/uaa/auth?password=pass&username=administrator",
+							"connectVia": {
+								"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded",
+								"X-TENANT-ID": "gdctest",
+								"Accept": "application/json"
+							},
+							"body": "'none'",
+							"linkedServices": [
+								{
+									"referenceName": "AuthenticationApiLinkedService",
+									"type": "LinkedServiceReference"
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"SITE_ID": {
+						"type": "string"
+					},
+					"SITE_NAME": {
+						"type": "string"
+					},
+					"SITE_TIMEZONE": {
+						"type": "string"
+					},
+					"AuthorizationToken": {
+						"type": "string"
+					},
+					"DEVICE_ID": {
+						"type": "string"
+					},
+					"DEVICE_NAME": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"MaxDevicePointsPage": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"TempCounter": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"CurrentPageCounter": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResource1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NavigateAllPoints_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Set Access Token",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.lookup_data",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Copy Point Specific Log Data",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "Set POINT_NAME",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "RestSource",
+											"httpRequestTimeout": "00:01:40",
+											"requestInterval": "00.00:00:00.010",
+											"requestMethod": "GET",
+											"additionalHeaders": {
+												"Authorization": {
+													"value": "@variables('var_authorization_token')",
+													"type": "Expression"
+												},
+												"X-TENANT-ID": "gdctest"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "RESTLogControllerAPIDataSet",
+											"type": "DatasetReference",
+											"parameters": {
+												"PointID": {
+													"value": "@string(item().PointID)",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SqlServerTable3",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "If Condition1",
+									"type": "IfCondition",
+									"dependsOn": [
+										{
+											"activity": "Copy Point Specific Log Data",
+											"dependencyConditions": [
+												"Failed"
+											]
+										}
+									],
+									"userProperties": [
+										{
+											"name": "var_may_var",
+											"value": "abc"
+										}
+									],
+									"typeProperties": {
+										"expression": {
+											"value": "@bool(contains(activity('Copy Point Specific Log Data').output,'Access token expired'))",
+											"type": "Expression"
+										},
+										"ifFalseActivities": [
+											{
+												"name": "Stored Procedure1",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[[dbo].[sp_insert_site_devices_points_log]",
+													"storedProcedureParameters": {
+														"DeviceID": {
+															"value": {
+																"value": "@int(variables('DEVICE_ID'))",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"DeviceName": {
+															"value": {
+																"value": "@string(variables('DEVICE_NAME'))",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"error": {
+															"value": {
+																"value": "@string(activity('Copy Point Specific Log Data').output.errors)",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"gmtLastLogTimeStamp": {
+															"value": {
+																"value": "'TimeStamp'",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"PointID": {
+															"value": {
+																"value": "@int(variables('POINT_ID'))",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"PointName": {
+															"value": {
+																"value": "@string(variables('POINT_NAME'))",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"SiteID": {
+															"value": {
+																"value": "@int(variables('SITE_ID'))",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"SiteName": {
+															"value": {
+																"value": "@string(variables('SITE_NAME'))",
+																"type": "Expression"
+															},
+															"type": "String"
+														},
+														"TimeZone": {
+															"value": {
+																"value": "@string(variables('TIME_ZONE'))",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "AllLogLinkedService",
+													"type": "LinkedServiceReference"
+												}
+											}
+										],
+										"ifTrueActivities": [
+											{
+												"name": "GetBearerToken",
+												"type": "WebActivity",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "7.00:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"url": "http://192.168.114.134/uaa/auth?password=pass&username=administrator",
+													"connectVia": {
+														"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+														"type": "IntegrationRuntimeReference"
+													},
+													"method": "POST",
+													"headers": {
+														"Content-Type": "application/x-www-form-urlencoded",
+														"X-TENANT-ID": "gdctest",
+														"Accept": "application/json"
+													},
+													"body": "'none'",
+													"linkedServices": [
+														{
+															"referenceName": "AuthenticationApiLinkedService",
+															"type": "LinkedServiceReference"
+														}
+													]
+												}
+											},
+											{
+												"name": "Reset Access Token",
+												"type": "SetVariable",
+												"dependsOn": [
+													{
+														"activity": "GetBearerToken",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"userProperties": [],
+												"typeProperties": {
+													"variableName": "var_authorization_token",
+													"value": {
+														"value": "@concat('Bearer ',activity('GetBearerToken').output.access_token)",
+														"type": "Expression"
+													}
+												}
+											}
+										]
+									}
+								},
+								{
+									"name": "Set SITE_ID",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "SITE_ID",
+										"value": {
+											"value": "@string(item().SiteID)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set SITE_NAME",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set SITE_ID",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "SITE_NAME",
+										"value": {
+											"value": "@string(item().SiteName)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set TIMEZONE",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set SITE_NAME",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "TIME_ZONE",
+										"value": {
+											"value": "@string(item().TimeZone)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set DEVICE_ID",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set TIMEZONE",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "DEVICE_ID",
+										"value": {
+											"value": "@string(item().DeviceID)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set DEVICE_NAME",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set DEVICE_ID",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "DEVICE_NAME",
+										"value": {
+											"value": "@string(item().DeviceName)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set POINT_ID",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set DEVICE_NAME",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "POINT_ID",
+										"value": {
+											"value": "@string(item().PointID)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set POINT_NAME",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set POINT_ID",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "POINT_NAME",
+										"value": {
+											"value": "@string(item().PointName)",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Update Temp Remaining PointIds",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "If Condition1",
+											"dependencyConditions": [
+												"Completed"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_temp_remaining_pointids",
+										"value": {
+											"value": "@string(sub(int(variables('var_remaining_point_ids')),1))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set Reset Remaining PointIds",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Update Temp Remaining PointIds",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_remaining_point_ids",
+										"value": {
+											"value": "@variables('var_temp_remaining_pointids')",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set Temp Remaining",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set Reset Remaining PointIds",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_temp_remaining_pointids",
+										"value": "0"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set Access Token",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Remaining PointIds",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_authorization_token",
+							"value": {
+								"value": "@pipeline().parameters.Authorization_Token",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set Remaining PointIds",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_remaining_point_ids",
+							"value": {
+								"value": "@string(pipeline().parameters.var_parameter_remaining_point_ids)",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"parameters": {
+					"lookup_data": {
+						"type": "array",
+						"defaultValue": [
+							{
+								"rownumber": 11,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 231,
+								"PointName": "HT Min Off Time"
+							},
+							{
+								"rownumber": 12,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 232,
+								"PointName": "CL Min On Time"
+							},
+							{
+								"rownumber": 13,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 233,
+								"PointName": "CL Min Off Time"
+							},
+							{
+								"rownumber": 14,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 234,
+								"PointName": "Spare 7013"
+							},
+							{
+								"rownumber": 15,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 235,
+								"PointName": "HT Curtail Stgs"
+							},
+							{
+								"rownumber": 16,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 236,
+								"PointName": "CL Curtail Stgs"
+							},
+							{
+								"rownumber": 17,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 237,
+								"PointName": "Heat Lockout En"
+							},
+							{
+								"rownumber": 18,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 238,
+								"PointName": "Cool Lockout En"
+							},
+							{
+								"rownumber": 19,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 239,
+								"PointName": "ReclHTDehumStgs"
+							},
+							{
+								"rownumber": 20,
+								"SiteID": 7,
+								"SiteName": "Site Kennesaw",
+								"TimeZone": "America/New_York",
+								"DeviceID": 208,
+								"DeviceName": "abc2",
+								"PointID": 240,
+								"PointName": "Aux Heat Dehum"
+							}
+						]
+					},
+					"Authorization_Token": {
+						"type": "string",
+						"defaultValue": "0"
+					},
+					"var_parameter_remaining_point_ids": {
+						"type": "string",
+						"defaultValue": "0"
+					}
+				},
+				"variables": {
+					"temp": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"temp_2": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_authorization_token": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"SITE_ID": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"SITE_NAME": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"TIME_ZONE": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"DEVICE_ID": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"DEVICE_NAME": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"POINT_ID": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"POINT_NAME": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_remaining_point_ids": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_temp_remaining_pointids": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RESTLogControllerAPIDataSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NavigateAllDeviceSpecificPointIDs_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup Get Total Point IDs",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "GetBearerToken",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"sqlReaderQuery": "select count(*) as TOTAL_DEVICE_POINTS from dbo.site_devices_points",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "SqlServerAllDeviceSpecificPointsDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set MAX Point IDs",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Lookup Get Total Point IDs",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_max_device_points_rows",
+							"value": {
+								"value": "@string(activity('Lookup Get Total Point IDs').output.value[0].TOTAL_DEVICE_POINTS)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get Number Of Lookup Iterations",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set Remaining PointIds",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_max_lookup_iterations",
+							"value": {
+								"value": "@if(bool(equals(mod(int(variables('var_max_device_points_rows')),int(variables('var_lookup_activity_max_limit'))),0)),string(div(int(variables('var_max_device_points_rows')),int(variables('var_lookup_activity_max_limit')))),string(add(div(int(variables('var_max_device_points_rows')),int(variables('var_lookup_activity_max_limit'))),1)))",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Loop through All Iterations",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Get Number Of Lookup Iterations",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@bool(lessOrEquals(int(variables('var_max_lookup_iterations')),int(variables('var_current_lookup_iteration'))))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Increment Loop Counter",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline1",
+											"dependencyConditions": [
+												"Succeeded",
+												"Failed"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_temp",
+										"value": {
+											"value": "@string(add(int(variables('var_current_lookup_iteration')),1))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set Loop Counter",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Increment Loop Counter",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_current_lookup_iteration",
+										"value": {
+											"value": "@variables('var_temp')",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Reset Temporary Counter",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set Loop Counter",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_temp",
+										"value": "0"
+									}
+								},
+								{
+									"name": "Set Lookup Start",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_lookup_start",
+										"value": {
+											"value": "@string(add(mul(int(variables('var_current_lookup_iteration')),int(variables('var_lookup_activity_max_limit'))),1))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Set Lookup End",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set Lookup Start",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_lookup_end",
+										"value": {
+											"value": "@string(mul(add(int(variables('var_current_lookup_iteration')),1),int(variables('var_lookup_activity_max_limit'))))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Lookup Data Between Specified Rows",
+									"type": "Lookup",
+									"dependsOn": [
+										{
+											"activity": "Set Temp Remaining",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "SqlServerSource",
+											"sqlReaderStoredProcedureName": "[[dbo].[sp_get_data_between_specified_rows]",
+											"storedProcedureParameters": {
+												"LookupEnd": {
+													"type": "String",
+													"value": {
+														"value": "@variables('var_lookup_end')",
+														"type": "Expression"
+													}
+												},
+												"LookupStart": {
+													"type": "String",
+													"value": {
+														"value": "@variables('var_lookup_start')",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00"
+										},
+										"dataset": {
+											"referenceName": "SqlServerAllDeviceSpecificPointsDataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [
+										{
+											"activity": "Lookup Data Between Specified Rows",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "NavigateAllPoints_Pipeline",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"lookup_data": {
+												"value": "@activity('Lookup Data Between Specified Rows').output.value",
+												"type": "Expression"
+											},
+											"Authorization_Token": {
+												"value": "@concat('Bearer ',activity('GetBearerToken').output.access_token)",
+												"type": "Expression"
+											},
+											"var_parameter_remaining_point_ids": {
+												"value": "@variables('var_temp_remaining')",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Set Temp Remaining",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Set Lookup End",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "var_temp_remaining",
+										"value": {
+											"value": "@variables('var_remaining_pointIds')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "GetBearerToken",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://192.168.114.134/uaa/auth?password=pass&username=administrator",
+							"connectVia": {
+								"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded",
+								"X-TENANT-ID": "gdctest",
+								"Accept": "application/json"
+							},
+							"body": "'none'",
+							"linkedServices": [
+								{
+									"referenceName": "AuthenticationApiLinkedService",
+									"type": "LinkedServiceReference"
+								}
+							]
+						}
+					},
+					{
+						"name": "Set Remaining PointIds",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set MAX Point IDs",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "var_remaining_pointIds",
+							"value": {
+								"value": "@variables('var_max_device_points_rows')",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"variables": {
+					"var_max_device_points_rows": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_max_lookup_iterations": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_lookup_activity_max_limit": {
+						"type": "String",
+						"defaultValue": "5000"
+					},
+					"var_lookup_start": {
+						"type": "String",
+						"defaultValue": "1"
+					},
+					"var_lookup_end": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_temp": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_current_lookup_iteration": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_remaining_pointIds": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"var_temp_remaining": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/NavigateAllPoints_Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NavigateAllSiteSpecificDevices_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SiteSpecificDevicesLookup",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "SqlServerSiteDeviceDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEachSiteSpecificDevices",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SiteSpecificDevicesLookup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SiteSpecificDevicesLookup').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Execute GetAllDeviceSpecificPoints_Pipeline",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "GetAllDeviceSpecificPoints_Pipeline",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"SITE_ID": {
+												"value": "@item().SiteID",
+												"type": "Expression"
+											},
+											"SITE_NAME": {
+												"value": "@item().SiteName",
+												"type": "Expression"
+											},
+											"SITE_TIMEZONE": {
+												"value": "@item().TimeZone",
+												"type": "Expression"
+											},
+											"AuthorizationToken": {
+												"value": "@pipeline().parameters.AuthorizationToken",
+												"type": "Expression"
+											},
+											"DEVICE_ID": {
+												"value": "@item().DeviceID",
+												"type": "Expression"
+											},
+											"DEVICE_NAME": {
+												"value": "@item().DeviceName",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"AuthorizationToken": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/GetAllDeviceSpecificPoints_Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetDeviceControllerData_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "GetSiteSpecificDevices",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "@concat('HTTP://192.168.114.134/inventory/api/devices/paging?siteId=',pipeline().parameters.SITE_ID)",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "GET",
+							"headers": {
+								"Authorization": {
+									"value": "@pipeline().parameters.AuthorizationToken",
+									"type": "Expression"
+								},
+								"X-TENANT-ID": "gdctest"
+							},
+							"linkedServices": [
+								{
+									"referenceName": "SiteDevicesLinkedService",
+									"type": "LinkedServiceReference"
+								}
+							],
+							"datasets": []
+						}
+					},
+					{
+						"name": "Get Max Site-Devices Pages",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetSiteSpecificDevices",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "SiteDevices-MaxPages",
+							"value": {
+								"value": "@string(activity('GetSiteSpecificDevices').output.totalPages)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Until Max Site Specific Device Pages",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Get Max Site-Devices Pages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@lessOrEquals(int(variables('SiteDevices-MaxPages')),int(variables('SiteDevices-PageCounter')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy Site-Devices Data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "RestSource",
+											"additionalColumns": [
+												{
+													"name": "SITE_ID",
+													"value": {
+														"value": "@pipeline().parameters.SITE_ID",
+														"type": "Expression"
+													}
+												},
+												{
+													"name": "SITE_NAME",
+													"value": {
+														"value": "@pipeline().parameters.SITE_NAME",
+														"type": "Expression"
+													}
+												},
+												{
+													"name": "SITE_TIMEZONE",
+													"value": {
+														"value": "@pipeline().parameters.SITE_TIMEZONE",
+														"type": "Expression"
+													}
+												}
+											],
+											"httpRequestTimeout": "00:01:40",
+											"requestInterval": "00.00:00:00.010",
+											"requestMethod": "GET",
+											"additionalHeaders": {
+												"Authorization": {
+													"value": "@pipeline().parameters.AuthorizationToken",
+													"type": "Expression"
+												},
+												"X-TENANT-ID": "gdctest"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"path": "[['id']"
+													},
+													"sink": {
+														"name": "DeviceID",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"path": "[['deviceName']"
+													},
+													"sink": {
+														"name": "DeviceName",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"path": "$['SITE_ID']"
+													},
+													"sink": {
+														"name": "SiteID",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"path": "$['SITE_NAME']"
+													},
+													"sink": {
+														"name": "SiteName",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"path": "$['SITE_TIMEZONE']"
+													},
+													"sink": {
+														"name": "TimeZone",
+														"type": "String"
+													}
+												}
+											],
+											"collectionReference": "$['content']"
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SiteSpecificDevicesListDataSet",
+											"type": "DatasetReference",
+											"parameters": {
+												"current_page": {
+													"value": "@variables('SiteDevices-PageCounter')",
+													"type": "Expression"
+												},
+												"siteId": {
+													"value": "@pipeline().parameters.SITE_ID",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SqlServerTable2",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "Add Site Device Counter",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Copy Site-Devices Data",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "SiteDevices-TempCounter",
+										"value": {
+											"value": "@string(add(int(variables('SiteDevices-PageCounter')),1))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Assign Addition",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Add Site Device Counter",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "SiteDevices-PageCounter",
+										"value": {
+											"value": "@variables('SiteDevices-TempCounter')",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Reset Temp",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Assign Addition",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "SiteDevices-TempCounter",
+										"value": "0"
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Until Max Site Specific Device Pages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "NavigateAllSiteSpecificDevices_Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"AuthorizationToken": {
+									"value": "@pipeline().parameters.AuthorizationToken",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"parameters": {
+					"SITE_ID": {
+						"type": "string"
+					},
+					"SITE_NAME": {
+						"type": "string"
+					},
+					"AuthorizationToken": {
+						"type": "string"
+					},
+					"SITE_TIMEZONE": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"SiteDevices-MaxPages": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"SiteDevices-PageCounter": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"SiteDevices-TempCounter": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SiteDevicesLinkedService')]",
+				"[concat(variables('factoryId'), '/pipelines/NavigateAllSiteSpecificDevices_Pipeline')]",
+				"[concat(variables('factoryId'), '/datasets/SiteSpecificDevicesListDataSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/NavigateAllSites_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SiteId_Loopkup",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "SqlServerSource",
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "SqlServerTable1",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEachSiteId",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "SiteId_Loopkup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('SiteId_Loopkup').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Execute GetDeviceControllerData_Pipeline",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "GetDeviceControllerData_Pipeline",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"SITE_ID": {
+												"value": "@item().SiteID",
+												"type": "Expression"
+											},
+											"SITE_NAME": {
+												"value": "@item().SiteName",
+												"type": "Expression"
+											},
+											"AuthorizationToken": {
+												"value": "@pipeline().parameters.AuthorizationToken",
+												"type": "Expression"
+											},
+											"SITE_TIMEZONE": {
+												"value": "@item().TimeZone",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"AuthorizationToken": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/GetDeviceControllerData_Pipeline')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/GetSiteControllerData_Pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "WebAuthenticationGetBearerToken",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "http://192.168.114.134/uaa/auth?password=pass&username=administrator",
+							"connectVia": {
+								"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded",
+								"X-TENANT-ID": "gdctest",
+								"Accept": "application/json"
+							},
+							"body": "'none'",
+							"linkedServices": [
+								{
+									"referenceName": "AuthenticationApiLinkedService",
+									"type": "LinkedServiceReference"
+								}
+							],
+							"datasets": []
+						}
+					},
+					{
+						"name": "GetAllSites",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "WebAuthenticationGetBearerToken",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "HTTP://192.168.114.134/inventory/api/sites/paging",
+							"connectVia": {
+								"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "GET",
+							"headers": {
+								"Authorization": {
+									"value": "@concat('Bearer ', activity('WebAuthenticationGetBearerToken').output.access_token)",
+									"type": "Expression"
+								},
+								"X-TENANT-ID": "gdctest"
+							},
+							"linkedServices": [
+								{
+									"referenceName": "SiteControllerApiLinkedService",
+									"type": "LinkedServiceReference"
+								}
+							],
+							"datasets": []
+						}
+					},
+					{
+						"name": "Get Max Site Controller Pages",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetAllSites",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "MAX_SITE_CONTROLLER_PAGES",
+							"value": {
+								"value": "@string(activity('GetAllSites').output.totalPages)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Until All Site Controller Pages",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Get Max Site Controller Pages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(int(variables('SiteControllerPageCounter')),int(variables('MAX_SITE_CONTROLLER_PAGES')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy Site Controller Data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "RestSource",
+											"httpRequestTimeout": "00:01:40",
+											"requestInterval": "00.00:00:00.010",
+											"requestMethod": "GET",
+											"additionalHeaders": {
+												"Authorization": {
+													"value": "@concat('Bearer ', activity('WebAuthenticationGetBearerToken').output.access_token)",
+													"type": "Expression"
+												},
+												"X-TENANT-ID": "gdctest"
+											}
+										},
+										"sink": {
+											"type": "SqlServerSink"
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"path": "[['id']"
+													},
+													"sink": {
+														"name": "SiteID",
+														"type": "Int32"
+													}
+												},
+												{
+													"source": {
+														"path": "[['siteName']"
+													},
+													"sink": {
+														"name": "SiteName",
+														"type": "String"
+													}
+												},
+												{
+													"source": {
+														"path": "[['timezone']"
+													},
+													"sink": {
+														"name": "TimeZone",
+														"type": "String"
+													}
+												}
+											],
+											"collectionReference": "$['content']"
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SiteControllerApiDataSet",
+											"type": "DatasetReference",
+											"parameters": {
+												"site_controller_current_page": {
+													"value": "@variables('SiteControllerPageCounter')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SQLServerSiteControllerDataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "Increment Site Controller Page Counter",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Copy Site Controller Data",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "TempSiteControllerPageNumber",
+										"value": {
+											"value": "@string(add(int(variables('SiteControllerPageCounter')),1))",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Assign Increment",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Increment Site Controller Page Counter",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "SiteControllerPageCounter",
+										"value": {
+											"value": "@variables('TempSiteControllerPageNumber')",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Rest Site Controller Temp Counter",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Assign Increment",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "TempSiteControllerPageNumber",
+										"value": "0"
+									}
+								}
+							],
+							"timeout": "7.00:00:00"
+						}
+					},
+					{
+						"name": "Execute NavigateAllSites_Pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Until All Site Controller Pages",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "NavigateAllSites_Pipeline",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"AuthorizationToken": {
+									"value": "@concat('Bearer ',activity('WebAuthenticationGetBearerToken').output.access_token)",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"variables": {
+					"MAX_SITE_CONTROLLER_PAGES": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"SiteControllerPageCounter": {
+						"type": "String",
+						"defaultValue": "0"
+					},
+					"TempSiteControllerPageNumber": {
+						"type": "String",
+						"defaultValue": "0"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SiteControllerApiLinkedService')]",
+				"[concat(variables('factoryId'), '/pipelines/NavigateAllSites_Pipeline')]",
+				"[concat(variables('factoryId'), '/datasets/SiteControllerApiDataSet')]",
+				"[concat(variables('factoryId'), '/datasets/SQLServerSiteControllerDataSet')]"
+			]
+		}
+	]
+}

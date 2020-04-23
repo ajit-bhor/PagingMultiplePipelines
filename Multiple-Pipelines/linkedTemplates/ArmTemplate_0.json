@@ -1,0 +1,676 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "Multiple-Pipelines"
+		},
+		"AllDeviceSpecificPointIdsLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AllDeviceSpecificPointIdsLinkedService'"
+		},
+		"AllLogLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AllLogLinkedService'"
+		},
+		"SqlServerLogDataLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerLogDataLinkedService'"
+		},
+		"SqlServerSiteControllerDataSet_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteControllerDataSet'"
+		},
+		"SqlServerSiteDeviceLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteDeviceLinkedService'"
+		},
+		"SqlServerSiteDevicePointsLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteDevicePointsLinkedService'"
+		},
+		"SqlServerSiteDevicesListLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteDevicesListLinkedService'"
+		},
+		"AuthenticationApiLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AuthenticationApiLinkedService'"
+		},
+		"RESTDevicesPointsLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'RESTDevicesPointsLinkedService'"
+		},
+		"RESTLogControllerAPILinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'RESTLogControllerAPILinkedService'"
+		},
+		"RESTLogControllerPAI_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'RESTLogControllerPAI'"
+		},
+		"SelfHostedIntegrationRuntimeReferenced_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ff7bffaf-3b46-421d-bf5a-8a617ba53560/resourcegroups/april8-resourcegroup-1/providers/Microsoft.DataFactory/factories/Comres-Site-Supervisor-ADF/integrationruntimes/SelfHostedIntegrationRuntime"
+		},
+		"AuthenticationApiLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://192.168.114.134/uaa/auth"
+		},
+		"AuthenticationApiLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"DevicePointsLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/api/points/paging"
+		},
+		"RESTDevicePagesLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/"
+		},
+		"RESTDevicesPointsLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/api/points/paging"
+		},
+		"RESTDevicesPointsLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"RESTLogControllerAPILinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://192.168.114.134/log/api/log/get/"
+		},
+		"RESTLogControllerAPILinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"RESTLogControllerPAI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://192.168.114.134/log/api/log/get"
+		},
+		"RESTLogControllerPAI_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AllDeviceSpecificPointIdsLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('AllDeviceSpecificPointIdsLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AllLogLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AllLogLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerLogDataLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServerLogDataLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerSiteControllerDataSet')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServerSiteControllerDataSet_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerSiteDeviceLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServerSiteDeviceLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerSiteDevicePointsLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServerSiteDevicePointsLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerSiteDevicesListLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SqlServer",
+				"typeProperties": {
+					"connectionString": "[parameters('SqlServerSiteDevicesListLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SelfHostedIntegrationRuntimeReferenced')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {
+					"linkedInfo": {
+						"resourceId": "[parameters('SelfHostedIntegrationRuntimeReferenced_properties_typeProperties_linkedInfo_resourceId')]",
+						"authorizationType": "Rbac"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerAllDeviceSpecificPointsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AllDeviceSpecificPointIdsLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "SiteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SiteName",
+						"type": "varchar"
+					},
+					{
+						"name": "TimeZone",
+						"type": "varchar"
+					},
+					{
+						"name": "DeviceID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DeviceName",
+						"type": "varchar"
+					},
+					{
+						"name": "PointID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "PointName",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "site_devices_points"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AllDeviceSpecificPointIdsLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerSiteDeviceDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerSiteDeviceLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "SiteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SiteName",
+						"type": "varchar"
+					},
+					{
+						"name": "TimeZone",
+						"type": "varchar"
+					},
+					{
+						"name": "DeviceID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DeviceName",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "site_devices"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerSiteDeviceLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerSiteDevicePointsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerSiteDevicePointsLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "SiteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SiteName",
+						"type": "varchar"
+					},
+					{
+						"name": "TimeZone",
+						"type": "varchar"
+					},
+					{
+						"name": "DeviceID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DeviceName",
+						"type": "varchar"
+					},
+					{
+						"name": "PointID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "PointName",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "site_devices_points"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerSiteDevicePointsLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerSiteControllerDataSet",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "SiteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SiteName",
+						"type": "varchar"
+					},
+					{
+						"name": "TimeZone",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "sitecontroller"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerSiteControllerDataSet')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerSiteDevicesListLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "SiteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SiteName",
+						"type": "varchar"
+					},
+					{
+						"name": "DeviceID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DeviceName",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "site_devices"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerSiteDevicesListLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SqlServerTable3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SqlServerLogDataLinkedService",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SqlServerTable",
+				"schema": [
+					{
+						"name": "SiteID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SiteName",
+						"type": "varchar"
+					},
+					{
+						"name": "TimeZone",
+						"type": "varchar"
+					},
+					{
+						"name": "DeviceID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "DeviceName",
+						"type": "varchar"
+					},
+					{
+						"name": "PointID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "PointName",
+						"type": "varchar"
+					},
+					{
+						"name": "gmtLastLogTimeStamp",
+						"type": "varchar"
+					},
+					{
+						"name": "lastLogTimeStamp",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "logInstId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "logInterval",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "logType",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "logstatus",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "logtimeStamp",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "logvalue",
+						"type": "varchar"
+					},
+					{
+						"name": "error",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "site_devices_points_log"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SqlServerLogDataLinkedService')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AuthenticationApiLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('AuthenticationApiLinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('AuthenticationApiLinkedService_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('AuthenticationApiLinkedService_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntimeReferenced')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DevicePointsLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('DevicePointsLinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntimeReferenced')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RESTDevicePagesLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RESTDevicePagesLinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Anonymous"
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntimeReferenced')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RESTDevicesPointsLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RESTDevicesPointsLinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('RESTDevicesPointsLinkedService_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('RESTDevicesPointsLinkedService_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntimeReferenced')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RESTLogControllerAPILinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RESTLogControllerAPILinkedService_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('RESTLogControllerAPILinkedService_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('RESTLogControllerAPILinkedService_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntimeReferenced')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RESTLogControllerPAI')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "RestService",
+				"typeProperties": {
+					"url": "[parameters('RESTLogControllerPAI_properties_typeProperties_url')]",
+					"enableServerCertificateValidation": true,
+					"authenticationType": "Basic",
+					"userName": "[parameters('RESTLogControllerPAI_properties_typeProperties_userName')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('RESTLogControllerPAI_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "SelfHostedIntegrationRuntimeReferenced",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/SelfHostedIntegrationRuntimeReferenced')]"
+			]
+		}
+	]
+}

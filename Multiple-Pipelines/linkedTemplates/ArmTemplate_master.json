@@ -1,0 +1,293 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "Multiple-Pipelines"
+		},
+		"AllDeviceSpecificPointIdsLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AllDeviceSpecificPointIdsLinkedService'"
+		},
+		"AllLogLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AllLogLinkedService'"
+		},
+		"AuthenticationApiLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'AuthenticationApiLinkedService'"
+		},
+		"RESTDevicesPointsLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'RESTDevicesPointsLinkedService'"
+		},
+		"RESTLogControllerAPILinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'RESTLogControllerAPILinkedService'"
+		},
+		"RESTLogControllerPAI_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'RESTLogControllerPAI'"
+		},
+		"SiteControllerApiLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SiteControllerApiLinkedService'"
+		},
+		"SiteDevicesLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SiteDevicesLinkedService'"
+		},
+		"SiteSpecificDevicePointsLinkedService_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SiteSpecificDevicePointsLinkedService'"
+		},
+		"SqlServerLogDataLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerLogDataLinkedService'"
+		},
+		"SqlServerSiteControllerDataSet_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteControllerDataSet'"
+		},
+		"SqlServerSiteControllerLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteControllerLinkedService'"
+		},
+		"SqlServerSiteDeviceLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteDeviceLinkedService'"
+		},
+		"SqlServerSiteDevicePointsLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteDevicePointsLinkedService'"
+		},
+		"SqlServerSiteDevicesListLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'SqlServerSiteDevicesListLinkedService'"
+		},
+		"AuthenticationApiLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://192.168.114.134/uaa/auth"
+		},
+		"AuthenticationApiLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"DevicePointsLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/api/points/paging"
+		},
+		"RESTDevicePagesLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/"
+		},
+		"RESTDevicesPointsLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/api/points/paging"
+		},
+		"RESTDevicesPointsLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"RESTLogControllerAPILinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://192.168.114.134/log/api/log/get/"
+		},
+		"RESTLogControllerAPILinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"RESTLogControllerPAI_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "http://192.168.114.134/log/api/log/get"
+		},
+		"RESTLogControllerPAI_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"SiteControllerApiLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/api/sites/paging"
+		},
+		"SiteControllerApiLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"SiteDevicesLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/"
+		},
+		"SiteDevicesLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"SiteSpecificDeviceListLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/"
+		},
+		"SiteSpecificDevicePointsLinkedService_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "HTTP://192.168.114.134/inventory/"
+		},
+		"SiteSpecificDevicePointsLinkedService_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "administrator"
+		},
+		"SelfHostedIntegrationRuntimeReferenced_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ff7bffaf-3b46-421d-bf5a-8a617ba53560/resourcegroups/april8-resourcegroup-1/providers/Microsoft.DataFactory/factories/Comres-Site-Supervisor-ADF/integrationruntimes/SelfHostedIntegrationRuntime"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AllDeviceSpecificPointIdsLinkedService_connectionString": {
+						"value": "[parameters('AllDeviceSpecificPointIdsLinkedService_connectionString')]"
+					},
+					"AllLogLinkedService_connectionString": {
+						"value": "[parameters('AllLogLinkedService_connectionString')]"
+					},
+					"SqlServerLogDataLinkedService_connectionString": {
+						"value": "[parameters('SqlServerLogDataLinkedService_connectionString')]"
+					},
+					"SqlServerSiteControllerDataSet_connectionString": {
+						"value": "[parameters('SqlServerSiteControllerDataSet_connectionString')]"
+					},
+					"SqlServerSiteDeviceLinkedService_connectionString": {
+						"value": "[parameters('SqlServerSiteDeviceLinkedService_connectionString')]"
+					},
+					"SqlServerSiteDevicePointsLinkedService_connectionString": {
+						"value": "[parameters('SqlServerSiteDevicePointsLinkedService_connectionString')]"
+					},
+					"SqlServerSiteDevicesListLinkedService_connectionString": {
+						"value": "[parameters('SqlServerSiteDevicesListLinkedService_connectionString')]"
+					},
+					"AuthenticationApiLinkedService_password": {
+						"value": "[parameters('AuthenticationApiLinkedService_password')]"
+					},
+					"RESTDevicesPointsLinkedService_password": {
+						"value": "[parameters('RESTDevicesPointsLinkedService_password')]"
+					},
+					"RESTLogControllerAPILinkedService_password": {
+						"value": "[parameters('RESTLogControllerAPILinkedService_password')]"
+					},
+					"RESTLogControllerPAI_password": {
+						"value": "[parameters('RESTLogControllerPAI_password')]"
+					},
+					"SelfHostedIntegrationRuntimeReferenced_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('SelfHostedIntegrationRuntimeReferenced_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"AuthenticationApiLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('AuthenticationApiLinkedService_properties_typeProperties_url')]"
+					},
+					"AuthenticationApiLinkedService_properties_typeProperties_userName": {
+						"value": "[parameters('AuthenticationApiLinkedService_properties_typeProperties_userName')]"
+					},
+					"DevicePointsLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('DevicePointsLinkedService_properties_typeProperties_url')]"
+					},
+					"RESTDevicePagesLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('RESTDevicePagesLinkedService_properties_typeProperties_url')]"
+					},
+					"RESTDevicesPointsLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('RESTDevicesPointsLinkedService_properties_typeProperties_url')]"
+					},
+					"RESTDevicesPointsLinkedService_properties_typeProperties_userName": {
+						"value": "[parameters('RESTDevicesPointsLinkedService_properties_typeProperties_userName')]"
+					},
+					"RESTLogControllerAPILinkedService_properties_typeProperties_url": {
+						"value": "[parameters('RESTLogControllerAPILinkedService_properties_typeProperties_url')]"
+					},
+					"RESTLogControllerAPILinkedService_properties_typeProperties_userName": {
+						"value": "[parameters('RESTLogControllerAPILinkedService_properties_typeProperties_userName')]"
+					},
+					"RESTLogControllerPAI_properties_typeProperties_url": {
+						"value": "[parameters('RESTLogControllerPAI_properties_typeProperties_url')]"
+					},
+					"RESTLogControllerPAI_properties_typeProperties_userName": {
+						"value": "[parameters('RESTLogControllerPAI_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"SiteControllerApiLinkedService_password": {
+						"value": "[parameters('SiteControllerApiLinkedService_password')]"
+					},
+					"SiteDevicesLinkedService_password": {
+						"value": "[parameters('SiteDevicesLinkedService_password')]"
+					},
+					"SiteSpecificDevicePointsLinkedService_password": {
+						"value": "[parameters('SiteSpecificDevicePointsLinkedService_password')]"
+					},
+					"SqlServerSiteControllerLinkedService_connectionString": {
+						"value": "[parameters('SqlServerSiteControllerLinkedService_connectionString')]"
+					},
+					"SiteControllerApiLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('SiteControllerApiLinkedService_properties_typeProperties_url')]"
+					},
+					"SiteControllerApiLinkedService_properties_typeProperties_userName": {
+						"value": "[parameters('SiteControllerApiLinkedService_properties_typeProperties_userName')]"
+					},
+					"SiteDevicesLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('SiteDevicesLinkedService_properties_typeProperties_url')]"
+					},
+					"SiteDevicesLinkedService_properties_typeProperties_userName": {
+						"value": "[parameters('SiteDevicesLinkedService_properties_typeProperties_userName')]"
+					},
+					"SiteSpecificDeviceListLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('SiteSpecificDeviceListLinkedService_properties_typeProperties_url')]"
+					},
+					"SiteSpecificDevicePointsLinkedService_properties_typeProperties_url": {
+						"value": "[parameters('SiteSpecificDevicePointsLinkedService_properties_typeProperties_url')]"
+					},
+					"SiteSpecificDevicePointsLinkedService_properties_typeProperties_userName": {
+						"value": "[parameters('SiteSpecificDevicePointsLinkedService_properties_typeProperties_userName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'ArmTemplate_0')]"
+			]
+		}
+	]
+}
