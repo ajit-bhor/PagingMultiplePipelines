@@ -49,7 +49,7 @@
 				"typeProperties": {
 					"variableName": "var_max_device_points_rows",
 					"value": {
-						"value": "5",
+						"value": "@string(activity('Lookup Get Total Point IDs').output.value[0].TOTAL_DEVICE_POINTS)",
 						"type": "Expression"
 					}
 				}
@@ -354,7 +354,7 @@
 			},
 			"var_lookup_activity_max_limit": {
 				"type": "String",
-				"defaultValue": "3"
+				"defaultValue": "5000"
 			},
 			"var_lookup_start": {
 				"type": "String",
