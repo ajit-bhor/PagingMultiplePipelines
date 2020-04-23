@@ -24,7 +24,14 @@
 						{
 							"name": "Copy Point Specific Log Data",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set POINT_NAME",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -82,7 +89,12 @@
 									]
 								}
 							],
-							"userProperties": [],
+							"userProperties": [
+								{
+									"name": "var_may_var",
+									"value": "abc"
+								}
+							],
 							"typeProperties": {
 								"expression": {
 									"value": "@bool(contains(activity('Copy Point Specific Log Data').output,'Access token expired'))",
@@ -105,11 +117,17 @@
 											"storedProcedureName": "[dbo].[sp_insert_site_devices_points_log]",
 											"storedProcedureParameters": {
 												"DeviceID": {
-													"value": "",
+													"value": {
+														"value": "@int(variables('DEVICE_ID'))",
+														"type": "Expression"
+													},
 													"type": "Int32"
 												},
 												"DeviceName": {
-													"value": "",
+													"value": {
+														"value": "@string(variables('DEVICE_NAME'))",
+														"type": "Expression"
+													},
 													"type": "String"
 												},
 												"error": {
@@ -120,27 +138,45 @@
 													"type": "String"
 												},
 												"gmtLastLogTimeStamp": {
-													"value": "",
+													"value": {
+														"value": "'TimeStamp'",
+														"type": "Expression"
+													},
 													"type": "String"
 												},
 												"PointID": {
-													"value": "",
+													"value": {
+														"value": "@int(variables('POINT_ID'))",
+														"type": "Expression"
+													},
 													"type": "Int32"
 												},
 												"PointName": {
-													"value": "",
+													"value": {
+														"value": "@string(variables('POINT_NAME'))",
+														"type": "Expression"
+													},
 													"type": "String"
 												},
 												"SiteID": {
-													"value": "",
+													"value": {
+														"value": "@int(variables('SITE_ID'))",
+														"type": "Expression"
+													},
 													"type": "Int32"
 												},
 												"SiteName": {
-													"value": "",
+													"value": {
+														"value": "@string(variables('SITE_NAME'))",
+														"type": "Expression"
+													},
 													"type": "String"
 												},
 												"TimeZone": {
-													"value": "",
+													"value": {
+														"value": "@string(variables('TIME_ZONE'))",
+														"type": "Expression"
+													},
 													"type": "String"
 												}
 											}
@@ -182,7 +218,8 @@
 													"referenceName": "AuthenticationApiLinkedService",
 													"type": "LinkedServiceReference"
 												}
-											]
+											],
+											"datasets": []
 										}
 									},
 									{
@@ -206,6 +243,139 @@
 										}
 									}
 								]
+							}
+						},
+						{
+							"name": "Set SITE_ID",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "SITE_ID",
+								"value": {
+									"value": "@string(item().SiteID)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set SITE_NAME",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set SITE_ID",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "SITE_NAME",
+								"value": {
+									"value": "@string(item().SiteName)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set TIMEZONE",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set SITE_NAME",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TIME_ZONE",
+								"value": {
+									"value": "@string(item().TimeZone)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set DEVICE_ID",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set TIMEZONE",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "DEVICE_ID",
+								"value": {
+									"value": "@string(item().DeviceID)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set DEVICE_NAME",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set DEVICE_ID",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "DEVICE_NAME",
+								"value": {
+									"value": "@string(item().DeviceName)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set POINT_ID",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set DEVICE_NAME",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "POINT_ID",
+								"value": {
+									"value": "@string(item().PointID)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set POINT_NAME",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set POINT_ID",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "POINT_NAME",
+								"value": {
+									"value": "@string(item().PointName)",
+									"type": "Expression"
+								}
 							}
 						}
 					]
@@ -345,6 +515,34 @@
 				"defaultValue": "0"
 			},
 			"var_authorization_token": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"SITE_ID": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"SITE_NAME": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"TIME_ZONE": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"DEVICE_ID": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"DEVICE_NAME": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"POINT_ID": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"POINT_NAME": {
 				"type": "String",
 				"defaultValue": "0"
 			}
