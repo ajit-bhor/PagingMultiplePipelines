@@ -377,6 +377,63 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Update Temp Remaining PointIds",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "If Condition1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_temp_remaining_pointids",
+								"value": {
+									"value": "@string(sub(int(variables('var_remaining_point_ids')),1))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Reset Remaining PointIds",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Update Temp Remaining PointIds",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_remaining_point_ids",
+								"value": {
+									"value": "@variables('var_temp_remaining_pointids')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Temp Remaining",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set Reset Remaining PointIds",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "var_temp_remaining_pointids",
+								"value": "0"
+							}
 						}
 					]
 				}
@@ -384,12 +441,32 @@
 			{
 				"name": "Set Access Token",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set Remaining PointIds",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "var_authorization_token",
 					"value": {
 						"value": "@pipeline().parameters.Authorization_Token",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Remaining PointIds",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_remaining_point_ids",
+					"value": {
+						"value": "@string(pipeline().parameters.var_parameter_remaining_point_ids)",
 						"type": "Expression"
 					}
 				}
@@ -502,7 +579,12 @@
 				]
 			},
 			"Authorization_Token": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "0"
+			},
+			"var_parameter_remaining_point_ids": {
+				"type": "string",
+				"defaultValue": "0"
 			}
 		},
 		"variables": {
@@ -543,6 +625,14 @@
 				"defaultValue": "0"
 			},
 			"POINT_NAME": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"var_remaining_point_ids": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"var_temp_remaining_pointids": {
 				"type": "String",
 				"defaultValue": "0"
 			}

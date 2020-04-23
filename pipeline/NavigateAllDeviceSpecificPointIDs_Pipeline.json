@@ -59,7 +59,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set MAX Point IDs",
+						"activity": "Set Remaining PointIds",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -250,12 +250,10 @@
 								},
 								"waitOnCompletion": true,
 								"parameters": {
-									"lookup_data": {
-										"value": "@activity('Lookup Data Between Specified Rows').output.value",
-										"type": "Expression"
-									},
-									"Authorization_Token": {
-										"value": "@concat('Bearer ',activity('GetBearerToken').output.access_token)",
+									"lookup_data": "@activity('Lookup Data Between Specified Rows').output.value",
+									"Authorization_Token": "@concat('Bearer ',activity('GetBearerToken').output.access_token)",
+									"var_remaining_point_ids": {
+										"value": "@variables('var_remaining_pointIds')",
 										"type": "Expression"
 									}
 								}
@@ -297,6 +295,26 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Set Remaining PointIds",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set MAX Point IDs",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "var_remaining_pointIds",
+					"value": {
+						"value": "@variables('var_max_device_points_rows')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {
@@ -325,6 +343,10 @@
 				"defaultValue": "0"
 			},
 			"var_current_lookup_iteration": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"var_remaining_pointIds": {
 				"type": "String",
 				"defaultValue": "0"
 			}
