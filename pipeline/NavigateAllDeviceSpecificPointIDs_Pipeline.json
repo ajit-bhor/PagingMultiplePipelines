@@ -259,7 +259,7 @@
 										"type": "Expression"
 									},
 									"var_parameter_remaining_point_ids": {
-										"value": "@variables('var_remaining_pointIds')",
+										"value": "@variables('var_temp_remaining')",
 										"type": "Expression"
 									}
 								}
